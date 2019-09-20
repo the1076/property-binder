@@ -14,7 +14,14 @@ You can't bind to sub objects because that causes a recursion headache that forc
    - `addBinding(object, binding)` adds a binding to the referenced object. It returns the bound object (you'll need to make changes to the returned object to see the results);
      Example:
      ```javascript
-     let myObject = {foo: 'bar', numba: 2, thisCantBeBound: { description: "but you CAN bind to this sub-object's properties by using the sub object as the target object, rather than the parent object."}, favorites: ['pizza', 'tacos', 'fried chicken', 'lemons'], toggles: [true, false, true, true]};
+     let myObject = 
+     {
+         foo: 'bar',
+         numba: 2,
+         thisCantBeBound: { description: "but you CAN bind to this sub-object's properties by using the sub object as the target object, rather than the parent object."},
+         favorites: ['pizza', 'tacos', 'fried chicken', 'lemons'],
+         toggles: [true, false, true, true]
+     };
      let $myInputElement = document.querySelector('.my-input');
      let $mySelectElement = document.querySelector('.my-select');
      let $someDiv = document.querySelector('div');
