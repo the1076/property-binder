@@ -1,0 +1,20 @@
+{
+    "name": "property-binder",
+    "description": "An ES6 Javacript library that allows one or two way binding to DOM elements for non-object properties of an object.",
+    "version": "0.0.1",
+    "main": "property-binder.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/the1076/property-binder.git"
+    },
+    "keywords": ["observable", "binding", "vanilla", "es6", "javascript", "two way"],
+    "author": "1076",
+    "license": "MIT",
+    "bugs": {
+      "url": "https://github.com/the1076/property-binder/issues"
+    },
+    "homepage": "https://github.com/the1076/property-binder"
+}

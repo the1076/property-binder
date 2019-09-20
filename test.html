@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Property Binder | Demo</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <style>
+        body
+        {
+            --white: #ddd;
+
+            --gray-dark: #363636;
+            --gray-mid: #4d4d4d;
+            --gray-light: #a9a9a9;
+
+            --black-light: #333;
+
+            --blue: rgb(44, 108, 182);
+
+            -ms-text-size-adjust: 100%;
+            -webkit-text-size-adjust: 100%;
+            color: #24292e;
+            line-height: 1.5;
+            font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
+            font-size: 16px;
+            line-height: 1.5;
+            word-wrap: break-word;
+            color: var(--black-light);
+        }
+        h1, h2, h3
+        {
+            border-bottom: solid 1px var(--gray-light);
+        }
+        a
+        {
+            color: var(--blue);
+        }
+        input, select
+        {
+            font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
+            font-size: 16px;
+            border: solid 1px var(--gray-light);
+            padding: .2em .5em;
+            background-color: var(--gray-mid);
+            color: var(--gray-light);
+            border-radius: 3px;
+        }
+        input:focus, input:active, select:focus, select:active
+        {
+            outline: none;
+            border-color: var(--blue);
+        }
+        button
+        {
+            background: none;
+            border: solid 1px var(--white);
+            color: var(--white);
+            cursor:pointer;
+            font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
+            font-size: 16px;
+        }
+        button:hover
+        {
+            background-color: var(--gray-mid);
+        }
+        main
+        {
+            max-width:1140px;
+            margin: 2em auto;
+            display:flex;
+            border: solid 1px var(--gray-dark);
+            box-shadow: 0 0 20px 2px rgba(0,0,0, .1);
+        }
+        
+        footer
+        {
+            max-width: 1024px;
+            margin: 1em auto;
+        }
+    </style>
+    <header>
+        <div class="branding">
+            <h1 class="title">Property Binder | Demo</h1>
+        </div>
+        <div class="version">
+            <span class="title">Version</span>
+            <span class="value" id="version-value">1.0.0</span>
+        </div>
+    </header>
+    <main>
+        <div class="div"></div>
+        <input class="text-like" type="text" />
+        <input class="check" type="checkbox" />
+        <input class="rad" type="radio" />
+        <ol class="list-ordered"></ol>
+        <ul class="list-unordered"></ul>
+        <dl class="list-description"></dl>
+        <div class="check-group">
+            <input class="one" type="checkbox" name="check-group" value="one" />
+            <input class="two" type="checkbox" name="check-group" value="two" />
+            <input class="three" type="checkbox" name="check-group" value="three" />
+            <input class="four" type="checkbox" name="check-group" value="four" />
+            <input class="five" type="checkbox" name="check-group" value="five" />
+        </div>
+        <div class="radio-group">
+            <input class="one" type="radio" name="radio-group" value="one" />
+            <input class="two" type="radio" name="radio-group" value="two" />
+            <input class="three" type="radio" name="radio-group" value="three" />
+            <input class="four" type="radio" name="radio-group" value="four" />
+            <input class="five" type="radio" name="radio-group" value="five" />
+        </div>
+        <select class="empty-select"></select>
+        <select class="filled-select">
+            <option value="one">One</option>
+            <option value="two">Two</option>
+            <option value="three">Three</option>
+            <option value="four">Four</option>
+            <option value="five">Five</option>
+        </select>
+    </main>
+    <footer>
+        <div class="copyright">
+            <h4>Property Binder is shared under the MIT License</h4>
+            <p>MIT License</p>
+
+            <p>Copyright (c) 2019 1076</p>
+
+            <p>Permission is hereby granted, free of charge, to any person obtaining a copy
+            of this software and associated documentation files (the "Software"), to deal
+            in the Software without restriction, including without limitation the rights
+            to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+            copies of the Software, and to permit persons to whom the Software is
+            furnished to do so, subject to the following conditions:</p>
+
+            <p>The above copyright notice and this permission notice shall be included in all
+            copies or substantial portions of the Software.</p>
+
+            <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+            IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+            FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+            AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+            LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+            OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+            SOFTWARE.</p>
+        </div>
+    </footer>
+    <script type="module">
+//Imports
+import { PropertyBinder,PropertyBinding, CollectionBinding } from './property-binder.dependencies.js';
+
+
+let $test_Element;
+let $test_Text;
+let $test_Check;
+let $test_Rad;
+let $test_select_empty;
+let $test_select_full;
+let $test_list_ordered;
+let $test_list_unordered;
+let $test_list_description;
+
+//Startup
+document.addEventListener('DOMContentLoaded', Document_OnContentLoaded);
+function Document_OnContentLoaded()
+{
+    document.removeEventListener('DOMContentLoaded', Document_OnContentLoaded);
+
+    getStaticElements();
+    let object = 
+    { 
+        name: "David",
+        age: 32.4,
+        likes: ['vidya', 'movies', 'dr. pepper'],
+        checks: [true, false, true, false, true],
+        radios: [false, true, true, false, true],
+        boolean: true,
+        aValue: 'two',
+    };
+
+    let toggles = ['.check-group .one', '.check-group .two', document.querySelector('.check-group .three')];
+
+    let testCollectionBinding = new CollectionBinding('checks', toggles, (value) => { console.log(value); });
+
+    let bindings = 
+    [
+        new PropertyBinding('likes', $test_Element, (value) => { console.log('test', value); }, (value) => { return `<li>${value}</li>`; }),
+        new PropertyBinding('boolean', $test_Check, (value) => { console.log('test', value); }),
+        new PropertyBinding('aValue', $test_select_full, (value) => { console.log('select test', value); }),
+    ];
+
+    this.boundObject = PropertyBinder.addBindings(object, bindings);
+    PropertyBinder.addBinding(this.boundObject, new PropertyBinding('likes', $test_Text, (value) => { console.log('test', value); }, (value) => { return `<li>${value}</li>`; }), true, true, 'input');
+}
+function getStaticElements()
+{
+    $test_Element = document.querySelector('main .div');
+    $test_Text = document.querySelector('main .text-like');
+    $test_Check = document.querySelector('main .check');
+    $test_Rad = document.querySelector('main .rad');
+    $test_select_empty = document.querySelector('main .empty-select');
+    $test_select_full = document.querySelector('main .filled-select');
+    $test_list_ordered = document.querySelector('main .list-ordered');
+    $test_list_unordered = document.querySelector('main .list-unordered');
+    $test_list_description = document.querySelector('main .list-description');
+}
+function addEventListeners()
+{
+}
+
+</script>
+</body>
+
+</html>
